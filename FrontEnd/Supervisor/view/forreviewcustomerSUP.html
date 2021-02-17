@@ -2,9 +2,9 @@
 <html lang="en">
 
 <head>
-  <!-- Original URL: http://www.urbanui.com/serein/template/demo/vertical-default-light/pages/tables/data-table.html
+<!-- Original URL: http://www.urbanui.com/serein/template/demo/vertical-default-light/pages/tables/data-table.html
 Date Downloaded: 11/30/2018 1:56:41 PM !-->
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <!-- Required meta tags -->
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
@@ -13,8 +13,7 @@ Date Downloaded: 11/30/2018 1:56:41 PM !-->
   <link rel="stylesheet" href="../../../../vendors/iconfonts/mdi/font/css/materialdesignicons.min.css" />
   <link rel="stylesheet" href="../../../../vendors/css/vendor.bundle.base.css" />
   <link rel="stylesheet" href="../../../../vendors/css/vendor.bundle.addons.css" />
-  <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
-    integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+  <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
   <!-- endinject -->
   <!-- plugin css for this page -->
   <!-- End plugin css for this page -->
@@ -23,11 +22,14 @@ Date Downloaded: 11/30/2018 1:56:41 PM !-->
   <!-- endinject -->
   <link rel="shortcut icon" href="../../../../images/favicon.png" />
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
-  <script src="/Supervisor/Controller/homeSUPController.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+  <script src="/accesst/ui-bootstrap-tpls-0.11.0.js"></script>
+  <script src="/Supervisor/Controller/listcustomerreviewSUPController.js"></script>
+
 </head>
 
 <body>
-  <div class="container-scroller" ng-app="homeSUPApp" ng-controller="homeSUPCtrl">
+  <div class="container-scroller" ng-app="listcustomerreviewSUPApp" ng-controller="listcustomerreviewSUPCtrl">
     <!-- partial:../../partials/_navbar.html -->
     <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
       <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
@@ -122,8 +124,8 @@ Date Downloaded: 11/30/2018 1:56:41 PM !-->
     <!-- partial -->
     <div class="container-fluid page-body-wrapper">
       <!-- partial:../../partials/_settings-panel.html -->
-
-
+      
+      
       <!-- partial -->
       <!-- partial:../../partials/_sidebar.html -->
       <nav class="sidebar sidebar-offcanvas" id="sidebar">
@@ -191,17 +193,126 @@ Date Downloaded: 11/30/2018 1:56:41 PM !-->
         <div class="content-wrapper">
           <div class="card">
             <div class="card-body">
-              <img src="/images/cucko.jpg" alt="" style="display: block;
-                margin-left: auto;
-                margin-right: auto;
-                width: 38%;">
+              <h4 class="card-title">List Customer</h4>
+              <div class="d-flex table-responsive">
+                <!-- <div class="btn-group mr-2">
+                    <button class="btn btn-sm btn-primary"  onclick="location.href='addrequestofuser.html'"><i class="mdi mdi-plus-circle-outline"></i> ADD REQUEST</button>
+                </div> -->
+                <div class="btn-group mr-2">
+                </div>
             </div>
+            <div class="row">
+              <div class="col-12 col-sm-12 col-md-10 col-lg-3 col-xl-3 mt-3">
+                <label for="">Custormer Code</label>
+                <!-- <input type="number" class="form-control" name="userSearch" ng-model="search"
+                  id="userSearch" /> -->
+                  <input type="text" ng-model="search" ng-change="filter()" class="form-control" placeholder="Search"/><br/>
+
+              </div>
+            </div>
+            
+          <div class="table-responsive mt-2" >
+            <table class="table mt-3 border-top">
+              <thead>
+                <tr>
+                  <th>ID Customer</th>
+                  <th>Company</th>
+                  <th>Customer Code</th>
+                  <th>Request Type</th>
+                  <th>Request Date</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody ng-repeat="data in filtered | startFrom:(currentPage-1)*entryLimit | limitTo:entryLimit">
+                <tr  data-toggle="collapse" data-target="#{{data.idRequestno}}" aria-expanded="true" aria-controls="{{data.idRequestno}}">
+                  <td>{{data.idRequestno}}</td>
+                      <td>{{data.company.nameCompany}}</td>
+                      <td>{{data.customercodeRequest}}</td>
+                      <td>{{data.requesttype.nameRequestType}}</td>
+                      <td>{{data.datecreatebyUserRequest}}</td>
+                      <td>
+                        <button class="btn btn" ng-style="style(data.statusrequest.idStatusRequest)" ng-click="detailstatus(data.idRequestno)" data-toggle="tooltip" data-placement="top" title="{{data.statusrequest.descriptionStatusRequest}}">{{data.statusrequest.nameStatusRequest}}</button>
+                      </td>
+                </tr>
+                
+                <tr id="{{data.idRequestno}}" class="collapse" aria-labelledby="heading" data-parent="#accordion">
+                  <td colspan="9">
+                    <table width="100%">
+                      <tr>
+                        <td><b style="font-size:15px">Customer Code: </b>{{data.customercodeRequest}}</td>
+                        <td><b style="font-size:15px">Contact Person: </b>{{data.contactpersonRequest}}</td>
+                        <td><b style="font-size:15px">Branch: </b>{{data.branchRequest}}</td>
+                        <td><b style="font-size:15px">Department: </b>{{data.departmentrequest.nameDepartment}}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td><b style="font-size:15px">Customer Name: </b>{{data.customernameRequest}}</td>
+                        <td><b style="font-size:15px">Currency: </b>{{data.currency.nameCurrency}}</td>
+                        <td><b style="font-size:15px">Customer Category: </b>{{data.customercategory.nameCusCa}}</td>
+                        <td><b style="font-size:15px">Created by: </b>{{data.accountUser.nameAccount}} (
+                          {{data.accountUser.department.nameDepartment}} )</td>
+                      </tr>
+                      <tr>
+                        <td><b style="font-size:15px">Organization Name: </b>{{data.organizationnameRequest}}</td>
+                        <td><b style="font-size:15px">Email Address: </b>{{data.emailaddressRequest}}</td>
+                        <td><b style="font-size:15px">Customer Type: </b>{{data.customertype.nameCustomerType}}</td>
+                        <td><b style="font-size:15px">Approved / Cancelled by: </b>{{data.accountApprover.nameAccount}}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td><b style="font-size:15px">Search Name: </b>{{data.searchnameRequest}}</td>
+                        <td><b style="font-size:15px">Phone Number: </b>{{data.phonenumberRequest}}</td>
+                        <td><b style="font-size:15px">Sales Officer: </b>{{data.saleofficer.nameSalesOfficer}}</td>
+                        <td><b style="font-size:15px">Enter Information (MIS): </b>{{data.accountMIS.nameAccount}}</td>
+                      </tr>
+                      <tr>
+                        <td><b style="font-size:15px">Billing Address: </b>{{data.billingaddressRequest}}</td>
+                        <td><b style="font-size:15px">Fax Number: </b>{{data.faxnumberRequest}}</td>
+                        <td><b style="font-size:15px">Sales District: </b>{{data.saledistrict.nameSalesDistrict}}</td>
+                        <td><b style="font-size:15px">Date Accepted by Approver:
+                        </b>{{data.dateacceptbyApproverRequest}}</td>
+                      </tr>
+                      <tr>
+                        <td><b style="font-size:15px">Shipping Address: </b>{{data.shippingaddressRequest}}</td>
+                        <td><b style="font-size:15px">Remarks: </b>{{data.remarksRequest}}</td>
+                        <td><b style="font-size:15px">Have Contract: </b>{{data.havecontract.nameHaveContract}}</td>
+                        <td><b style="font-size:15px">Date Cancelled by Approver:
+                        </b>{{data.datecancelbyApproverRequest}}</td>
+                      </tr>
+                      <tr>
+                        <td><b style="font-size:15px">Tax Code: </b>{{data.taxcodeRequest}}</td>
+                        <td><b style="font-size:15px">Company Group: </b>{{data.companygroupRequest}}</td>
+                        <td><b style="font-size:15px">Customer Group: </b>{{data.customergroup.nameCustomergroup}}
+                        </td>
+                        <td><b style="font-size:15px">Date Added Infor by MIS: </b>{{data.dateaddInforbyMISRequest}}
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="row">
+            <div class="col-2 col-sm-2 col-md-3 col-lg-3 col-xl-3"></div>
+            <div class="col-8 col-sm-8 col-md-6 col-lg-6 col-xl-6">
+              <nav>
+                <ul class="pagination rounded-flat justify-content-center pagination-success" >
+                  <!-- <pagination total-items="totalItems" ng-model="currentPage" max-size="maxSize" class="pagination-sm" items-per-page="itemsPerPage"></pagination> -->
+                  <pagination total-items="noOfPages" ng-model="currentPage" max-size="maxSize" class="pagination-sm" items-per-page="itemsPerPage"></pagination>
+              </ul>
+              </nav>
+            </div>
+            <div class="col-2 col-sm-2 col-md-3 col-lg-3 col-xl-3"></div>
+          </div>
+          </div>
           </div>
         </div>
         <!-- content-wrapper ends -->
         <!-- partial:../../partials/_footer.html -->
         <footer class="footer">
-
+          
         </footer>
         <!-- partial -->
       </div>
@@ -224,6 +335,11 @@ Date Downloaded: 11/30/2018 1:56:41 PM !-->
   <!-- Custom js for this page-->
   <script src="../../../../js/data-table.js"></script>
   <!-- End custom js for this page-->
+  <script type="text/javascript">
+    $(document).ready(function() {
+    $("body").tooltip({ selector: '[data-toggle=tooltip]' });
+});
+</script>
 </body>
 
 </html>
